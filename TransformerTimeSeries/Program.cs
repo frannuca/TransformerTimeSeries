@@ -19,8 +19,10 @@ class Program
         return returns.DropSparseRows();
     }
 
+    
     static void Main(string[] args)
     {
+        var topK = 1;
         var classes =
             "AGG,ARKF,ARKG,ARKK,ARKQ,ARKW,BIL,BND,BOTZ,CEW,CORN,CYB,DBC,DIA,EEM,EFA,EUO,EWJ,EWL,EWP,EWS,EWT,EWU,EWW,EWZ,FXB,FXE,FXF,FXY,GLD,HYG,IBB,ICF,IEF,IEI,INDA,IVV,IWM,JJG,LQD,MOAT,MTUM,PALL,PRNT,QQQ,QUAL,ROBO,RWO,RWR,SHY,SLV,SPHD,SPY,TIP,TLT,UNG,USMV,USO,UUP,VBR,VDE,VLUE,VNQ,VOE,VOO,VTI,VTV,VUG,VWO,WEAT,XBI,XLB,XLC,XLE,XLF,XLI,XLK,XLU,XLV";
         var classesList = classes.Split(',').ToList();
@@ -53,7 +55,7 @@ class Program
                 .Select(i => 1.0 / X.Column(i).StandardDeviation()).ToArray());
             X = X * norm;
 
-            var factors = LassoSearch.FindBestLambda(X, y, lambdaGrid, 2, 0.8);
+            var factors = LassoSearch.FindBestLambda(X, y, lambdaGrid, topK, 0.8);
             Console.WriteLine(
                 $"Betas:{string.Join(",", factors.selected.Select(i => factors.coeffs[i]))} {string.Join(",", factors.selected.Select(i => glist[i]))} --> Best Lambda: {factors.bestLambda} ");
             var XSelected = Matrix<double>.Build.DenseOfColumns(factors.selected.Select(i => X.Column(i)));
