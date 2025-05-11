@@ -83,8 +83,9 @@ class Program
             var filename = string.Join("_", group);
             frameres.SaveCsv($"/Users/fran/tmp/{filename}.csv",includeRowKeys:true);
             var betas = new Series<string,double>(
-                glist.Zip(rbetas).ToDictionary(x => x.Item1, x => x.Item2));
-            Frame.FromRecords(betas).SaveCsv($"/Users/fran/tmp/{filename}_betas.csv",includeRowKeys:true);
+                glist.Zip(rbetas.ToArray()).ToDictionary(x => x.Item1, x => x.Item2));
+            Console.WriteLine(betas);
+            Frame.FromRecords(betas.Observations).SaveCsv($"/Users/fran/tmp/{filename}_betas.csv", includeRowKeys: true);
         }
         
         // Save the selected factors to a CSV file
@@ -107,7 +108,7 @@ class Program
         frameres2.SaveCsv($"/Users/fran/tmp/{filenamef}_final.csv",includeRowKeys:true);
         var betas2 = new Series<string,double>(
             selectedFactors.Zip(finalbetas).ToDictionary(x => x.Item1, x => x.Item2));
-        Frame.FromRecords(betas2).SaveCsv($"/Users/fran/tmp/{filenamef}_betas.csv",includeRowKeys:true);
+        Frame.FromRecords(betas2.Observations).SaveCsv($"/Users/fran/tmp/{filenamef}_betas.csv",includeRowKeys:true);
         Console.WriteLine("Hello, World!");
     }
 }
